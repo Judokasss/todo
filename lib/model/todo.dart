@@ -11,8 +11,8 @@ class ToDo {
 
   static List<ToDo> todoList() {
     return [
-      ToDo(id: '01', todoText: 'dfssd', isDone: false),
-      ToDo(id: '02', todoText: 'todoText1', isDone: true),
+      ToDo(id: '01', todoText: 'Проверка', isDone: false),
+      ToDo(id: '02', todoText: 'Проверка11', isDone: true),
       ToDo(
         id: '03',
         todoText: 'todoText2',

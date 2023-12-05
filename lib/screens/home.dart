@@ -91,12 +91,25 @@ class _HomeState extends State<Home> {
                           ),
                         ),
                       ),
-                      for (ToDo todoo in _foundToDo.reversed)
-                        ToDoItem(
-                          todo: todoo,
-                          onToDoChacged: _handleToDoChange,
-                          onDeleteItem: _deleteToDoItem,
-                        ),
+                      if (_foundToDo.isEmpty)
+                        Center(
+                          child: Text(
+                            'В данный момент нет задач',
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: isDarkMode ? Colors.white : Colors.black,
+                            ),
+                          ),
+                        )
+                      else
+                        for (ToDo todoo in _foundToDo.reversed)
+                          ToDoItem(
+                            todo: todoo,
+                            onToDoChacged: _handleToDoChange,
+                            onDeleteItem: _deleteToDoItem,
+                            showEditModal: _showEditModal,
+                          ),
                     ],
                   ),
                 ),
@@ -162,6 +175,15 @@ class _HomeState extends State<Home> {
     );
   }
 
+  void _showEditModal(BuildContext context, ToDo todo) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return EditTodoScreen(todo: todo);
+      },
+    );
+  }
+
 // Удаление записи
   void _deleteToDoItem(String id) {
     setState(() {
@@ -205,23 +227,6 @@ class _HomeState extends State<Home> {
     setState(() {
       _foundToDo = results;
     });
-  }
-
-  // Сохранение темы
-  Future<void> _saveTheme() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isDarkMode', isDarkMode);
-  }
-
-  // Загрузка темы
-  Future<void> _loadTheme() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? savedTheme = prefs.getBool('isDarkMode');
-    if (savedTheme != null) {
-      setState(() {
-        isDarkMode = savedTheme;
-      });
-    }
   }
 
   Widget searchBox() {
@@ -270,6 +275,23 @@ class _HomeState extends State<Home> {
         todoList.clear();
         todoList.addAll(
             todoListData.map((data) => ToDo.fromMap(json.decode(data))));
+      });
+    }
+  }
+
+  // Сохранение темы
+  Future<void> _saveTheme() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isDarkMode', isDarkMode);
+  }
+
+  // Загрузка темы
+  Future<void> _loadTheme() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? savedTheme = prefs.getBool('isDarkMode');
+    if (savedTheme != null) {
+      setState(() {
+        isDarkMode = savedTheme;
       });
     }
   }
