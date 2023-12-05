@@ -179,9 +179,22 @@ class _HomeState extends State<Home> {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return EditTodoScreen(todo: todo);
+        return EditTodoScreen(
+          todo: todo,
+          onSave: (newText) {
+            // Обновление текста задачи в списке
+            setState(() {
+              todo.todoText = newText;
+            });
+            _saveData(); // Сохранение обновленных данных
+          },
+        );
       },
-    );
+    ).then((_) {
+      setState(() {
+        // Вызов setState после закрытия модального окна
+      });
+    });
   }
 
 // Удаление записи

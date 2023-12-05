@@ -93,8 +93,10 @@ class ToDoItem extends StatelessWidget {
 
 class EditTodoScreen extends StatefulWidget {
   final ToDo todo;
+  final Function(String) onSave;
 
-  const EditTodoScreen({Key? key, required this.todo}) : super(key: key);
+  const EditTodoScreen({Key? key, required this.todo, required this.onSave})
+      : super(key: key);
 
   @override
   _EditTodoScreenState createState() => _EditTodoScreenState();
@@ -107,6 +109,11 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
   void initState() {
     super.initState();
     _textEditingController = TextEditingController(text: widget.todo.todoText);
+  }
+
+  void _onSave(String newText) {
+    widget.onSave(newText);
+    // Другие действия, которые вы можете выполнить при сохранении
   }
 
   @override
@@ -125,9 +132,8 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
             ElevatedButton(
               onPressed: () {
                 // Сохранение изменений и закрытие модального окна
-                widget.todo.todoText = _textEditingController.text;
-                Navigator.of(context)
-                    .pop(widget.todo); // Передача обновленной задачи
+                _onSave(_textEditingController.text);
+                Navigator.of(context).pop(); // Закрытие модального окна
               },
               child: Text('Сохранить'),
             ),
