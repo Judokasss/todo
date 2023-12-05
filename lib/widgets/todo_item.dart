@@ -113,7 +113,6 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
 
   void _onSave(String newText) {
     widget.onSave(newText);
-    // Другие действия, которые вы можете выполнить при сохранении
   }
 
   @override
