@@ -176,7 +176,7 @@ class _HomeState extends State<Home> {
   }
 
   void _showEditModal(BuildContext context, ToDo todo) {
-    showModalBottomSheet(
+    showDialog(
       context: context,
       builder: (BuildContext context) {
         return EditTodoScreen(
@@ -207,13 +207,39 @@ class _HomeState extends State<Home> {
 
 // Добавление записи
   void _addToDoItem(String toDo) {
-    setState(() {
-      todoList.add(ToDo(
+    // Получение текста из контроллера и удаление начальных и конечных пробелов
+    String toDoText = toDo.trim();
+
+    // Проверка, что введенный текст не пустой
+    if (toDoText.isNotEmpty) {
+      setState(() {
+        todoList.add(ToDo(
           id: DateTime.now().millisecondsSinceEpoch.toString(),
-          todoText: toDo));
-    });
-    _todoConrtoller.clear();
-    _saveData();
+          todoText: toDoText,
+        ));
+      });
+      _todoConrtoller.clear();
+      _saveData();
+    } else {
+      // Вывод предупреждения, если поле ввода пусто
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Предупреждение'),
+            content: Text('Введите текст задачи.'),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
 // Выполнение задачи

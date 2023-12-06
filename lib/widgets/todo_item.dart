@@ -117,26 +117,35 @@ class _EditTodoScreenState extends State<EditTodoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-              controller: _textEditingController,
-              decoration: InputDecoration(labelText: 'Редактировать задачу'),
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 0,
+      backgroundColor: Color.fromARGB(255, 232, 226, 226),
+      child: Container(
+        height: 180,
+        width: 350,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TextField(
+                  controller: _textEditingController,
+                  decoration:
+                      InputDecoration(labelText: 'Редактировать задачу'),
+                ),
+                SizedBox(height: 22),
+                ElevatedButton(
+                  onPressed: () {
+                    _onSave(_textEditingController.text);
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('Сохранить'),
+                ),
+              ],
             ),
-            SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                // Сохранение изменений и закрытие модального окна
-                _onSave(_textEditingController.text);
-                Navigator.of(context).pop(); // Закрытие модального окна
-              },
-              child: Text('Сохранить'),
-            ),
-          ],
+          ),
         ),
       ),
     );
